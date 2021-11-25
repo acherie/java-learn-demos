@@ -5,8 +5,9 @@
         </encoder>
     </appender>
 
-    <logger name="org.asynchttpclient" level="DEBUG"/>
-    <logger name="io.netty" level="DEBUG"/>
+    <logger name="acherie" level="INFO"/>
+    <logger name="org.asynchttpclient" level="INFO"/>
+    <logger name="io.netty" level="INFO"/>
     <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>

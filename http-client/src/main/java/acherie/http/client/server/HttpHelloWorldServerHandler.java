@@ -21,6 +21,8 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +35,9 @@ import static io.netty.handler.codec.http.HttpHeaderValues.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
 public class HttpHelloWorldServerHandler extends SimpleChannelInboundHandler<HttpObject> {
+
+    final static Logger logger = LoggerFactory.getLogger(HttpHelloWorldServerHandler.class);
+
     private static final byte[] CONTENT = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
 
     @Override
@@ -81,6 +86,8 @@ public class HttpHelloWorldServerHandler extends SimpleChannelInboundHandler<Htt
                     if (!keepAlive) {
                         f.addListener(ChannelFutureListener.CLOSE);
                     }
+
+                    logger.debug("write response");
                 }, delay, TimeUnit.MILLISECONDS);
             }
 
