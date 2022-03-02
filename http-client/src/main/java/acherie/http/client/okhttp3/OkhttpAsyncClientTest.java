@@ -16,12 +16,14 @@ public class OkhttpAsyncClientTest {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        int loop = 10000;
+        int loop = 500000;
 
         OkHttpClient client = buildClient();
 
         Request request = new Request.Builder()
-                .url("http://localhost:8080?delay=100")
+//                .url("http://localhost:8080?delay=100")
+                .url("http://localhost:8080")
+//                .url("http://localhost:8888/ping")
                 .build();
 
         client.newCall(request).enqueue(new FutureCallback());
@@ -30,6 +32,7 @@ public class OkhttpAsyncClientTest {
 
         CompletableFuture[] futures = new CompletableFuture[loop];
         for (int i = 0; i < loop; i++) {
+            logger.info("request: {}", i);
             FutureCallback callback = new FutureCallback();
             client.newCall(request).enqueue(callback);
             futures[i] = callback.future;
@@ -40,7 +43,7 @@ public class OkhttpAsyncClientTest {
         long end = System.currentTimeMillis();
         logger.info("Time: {}ms", end - start);
         logger.info("Count: {}", count.get());
-        logger.info("Tps: {}", count.get() / ((end - start) / 1000));
+        logger.info("Tps: {}", count.get() / ((end - start) / 1000.0));
 
         client.dispatcher().executorService().shutdown();
         client.connectionPool().evictAll();
@@ -49,7 +52,7 @@ public class OkhttpAsyncClientTest {
     static OkHttpClient buildClient() {
 
         Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequestsPerHost(Integer.MAX_VALUE);
+        dispatcher.setMaxRequestsPerHost(8);
 
         return new OkHttpClient.Builder()
                 .dispatcher(dispatcher)

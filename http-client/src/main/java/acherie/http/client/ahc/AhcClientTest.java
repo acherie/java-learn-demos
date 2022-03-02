@@ -20,23 +20,26 @@ public class AhcClientTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
 
         DefaultAsyncHttpClientConfig.Builder config = config()
+//                .setMaxConnectionsPerHost(10)
+//                .setMaxConnections(1000)
                 .setRequestTimeout(60000 * 60)
                 .setReadTimeout(60000 * 60)
                 .setConnectTimeout(60000);
 //        config.setProxyServer(proxyServer("127.0.0.1", 8888));
         AsyncHttpClient asyncHttpClient = asyncHttpClient(config);
 
-        Request request = get("http://localhost:8080?delay=100").build();
+//        Request request = get("http://localhost:8080?delay=100").build();
+        Request request = get("http://localhost:8888/ping").build();
         CompletableFuture<String> whenResponse = executeGet(asyncHttpClient, request, new DefaultAsyncHandler());
         whenResponse.join();
         String res = whenResponse.get();
 
-        int loop = 100000;
+        int loop = 10000;
         long start = System.currentTimeMillis();
 
         CompletableFuture[] futures = new CompletableFuture[loop];
         for (int i = 0; i < loop; i++) {
-            logger.info("execute get idx: {}", i);
+            logger.info("request: {}", i);
             CompletableFuture<String> future = executeGet(asyncHttpClient, request, new DefaultAsyncHandler());
             futures[i] = future;
         }
