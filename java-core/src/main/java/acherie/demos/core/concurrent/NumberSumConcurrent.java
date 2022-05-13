@@ -6,6 +6,9 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 import java.util.stream.LongStream;
 
+/**
+ * 多线程实现 1-1000 的数相加
+ */
 public class NumberSumConcurrent {
 
     public static void main(String[] args) {

@@ -37,5 +37,6 @@ public class Resilience4jCircuitBeakerTest {
 
         CircuitBreaker customCircuitBreaker = CircuitBreaker
                 .of("testName", circuitBreakerConfig);
+
     }
 }
